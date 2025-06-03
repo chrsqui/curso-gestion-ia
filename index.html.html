@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IA Project Master - Gestión de Proyectos con IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* Reset y base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0; padding: 0;
+    background: #FFFFFF;
+    color: #000000;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Header sticky y menú */
+  header {
+    background: #0A1F44;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: #fff;
+    user-select: none;
+  }
+  nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  nav a {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  nav a:hover,
+  nav a:focus {
+    background-color: #091933;
+    outline: none;
+  }
+
+  /* HERO SECTION */
+  .hero {
+    position: relative;
+    min-height: 600px;
+    background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 1rem;
+    color: white;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    max-width: 900px;
+    z-index: 1;
+  }
+  .hero-content h2 {
+    font-size: 2.8rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  }
+  .hero-content p {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  }
+  .btn-primary {
+    background-color: #0A1F44;
+    color: white;
+    padding: 0.85rem 2.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1.15rem;
+    cursor: pointer;
+    transition: background-color 0.3s linear;
+    box-shadow: 0 4px 10px rgba(10,31,68,0.4);
+  }
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: #081635;
+    outline:none;
+    box-shadow: 0 6px 18px rgba(8,22,53,0.7);
+  }
+
+  /* BENEFICIOS CON ICONOS */
+  #benefits {
+    padding: 4rem 2rem;
+    background: #F9F9F9;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(270px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .benefit-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 6px 18px rgb(10 31 68 / 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: default;
+    color: #000000; /* Texto negro para legibilidad */
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .benefit-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 30px rgb(10 31 68 / 0.15);
+  }
+  .benefit-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    fill: #0A1F44;
+  }
+  .benefit-card h3 {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #000000;
+    margin: 0;
+    user-select:none;
+  }
+
+  /* Centrar los subtítulos de secciones */
+  #benefits > h2,
+  #faqs > h2,
+  #testimonials > h2 {
+    text-align: center;
+  }
+
+  /* TESTIMONIOS CON ESTILO WHATSAPP */
+  #testimonials {
+    background: #F9F9F9;
+    padding: 4rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  #testimonials h2 {
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #0A1F44;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .chat-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgb(10 31 68 / 0.1);
+    padding: 1rem 1rem 2rem 1rem;
+    margin-bottom: 2rem;
+    max-width: 350px;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border: 1px solid #ddd;
+    position: relative;
+  }
+  .chat-header {
+    background: #128C7E;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px 20px 0 0;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    margin: -1rem -1rem 1rem -1rem;
+    user-select: none;
+  }
+  .message {
+    max-width: 70%;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    display: inline-block;
+    clear: both;
+    line-height: 1.2;
+  }
+  .message.sent {
+    background-color: #DCF8C6;
+    float: right;
+    color: #000;
+    text-align: left;
+  }
+  .message.received {
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    float: left;
+    color: #000;
+    text-align: left;
+  }
+  .author-info {
+    font-weight: 700;
+    color: #0A1F44;
+    font-size: 0.9rem;
+    padding-top: 4px;
+  }
+  .profession-info {
+    font-size: 0.8rem;
+    color: #666;
+    padding-top: 2px;
+    padding-left: 10px;
+  }
+  .testimonial-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  @media (max-width: 480px) {
+    .chat-container {
+      max-width: 90vw;
+    }
+  }
+
+  /* CALENDARIO Y PROMOCIÓN */
+  #calendar {
+    padding: 4rem 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #calendar h2 {
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #0A1F44;
+    margin-bottom: 1rem;
+  }
+  #calendar p {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0.3rem 0;
+    color: #0A1F44;
+  }
+  #countdown {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    color: #0A1F44;
+    letter-spacing: 0.02em;
+  }
+  .discount {
+    color: #d32f2f;
+    font-weight: 700;
+    margin-top: 0.7rem;
+    font-size: 1.2rem;
+  }
+
+  /* FORMULARIO DE INSCRIPCIÓN */
+  #registration {
+    max-width: 500px;
+    background: #F9F9F9;
+    margin: 4rem auto;
+    padding: 2rem 2rem 3rem 2rem;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgb(10 31 68 / 0.08);
+  }
+  #registration h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #0A1F44;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  }
+  input[type="text"],
+  input[type="email"],
+  select {
+    font-size: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    border: 1.7px solid #ccc;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  select:focus {
+    outline: none;
+    border-color: #0A1F44;
+    box-shadow: 0 0 6px rgb(10 31 68 / 0.3);
+  }
+  button[type="submit"] {
+    margin-top: 1rem;
+    background-color: #0A1F44;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.9rem 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgb(10 31 68 / 0.35);
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover,
+  button[type="submit"]:focus {
+    background-color: #081635;
+    outline:none;
+  }
+
+  /* PREGUNTAS FRECUENTES */
+  #faqs {
+    max-width: 900px;
+    margin: 4rem auto 5rem auto;
+    padding: 0 1rem;
+  }
+  #faqs h2 {
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #0A1F44;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .faq-item {
+    margin-bottom: 1.5rem;
+  }
+  .faq-item strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    color: #0A1F44;
+  }
+
+  /* DESCARGA MATERIAL GRATUITO */
+  #download {
+    text-align: center;
+    margin: 3rem 1rem 5rem 1rem;
+  }
+  #download button {
+    background-color: #0A1F44;
+    color: white;
+    padding: 0.85rem 2.2rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgb(10 31 68 / 0.4);
+    transition: background-color 0.3s ease;
+  }
+  #download button:hover,
+  #download button:focus {
+    background-color: #081635;
+    outline:none;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0A1F44;
+    color: #FFFFFF;
+    padding: 2rem 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    user-select: none;
+  }
+  footer p, footer a {
+    margin: 0.3rem 0;
+    color: #FFFFFF;
+  }
+  footer a:hover,
+  footer a:focus {
+    text-decoration: underline;
+    outline:none;
+  }
+  footer .social-links {
+    margin: 0.8rem 0 1.4rem 0;
+  }
+  footer .social-links a {
+    margin: 0 10px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero-content h2 {
+      font-size: 2rem;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+    }
+    nav {
+      gap: 1rem;
+    }
+    #benefits {
+      grid-template-columns: 1fr 1fr;
+    }
+    #registration {
+      width: 90%;
+    }
+  }
+  @media (max-width: 480px) {
+    #benefits {
+      grid-template-columns: 1fr;
+      padding: 2rem 1rem;
+    }
+    nav {
+      font-size: 0.9rem;
+    }
+    header h1 {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <h1>IA Project Master</h1>
+  <nav aria-label="Menú de navegación principal">
+    <a href="#hero" tabindex="0">Inicio</a>
+    <a href="#benefits" tabindex="0">Contenido</a>
+    <a href="#testimonials" tabindex="0">Testimonios</a>
+    <a href="#registration" tabindex="0">Inscripción</a>
+    <a href="#faqs" tabindex="0">Preguntas Frecuentes</a>
+    <a href="#contact" tabindex="0">Contacto</a>
+  </nav>
+</header>
+
+<!-- Sección Hero -->
+<section class="hero" id="hero" role="banner" aria-label="Sección principal con título, subtítulo y botón de inscripción">
+  <div class="hero-content">
+    <h2>Domina la Gestión de Proyectos con Inteligencia Artificial</h2>
+    <p>Adquiere habilidades clave para el futuro con herramientas inteligentes</p>
+    <button class="btn-primary" onclick="document.getElementById('registration-form').scrollIntoView({behavior:'smooth'})" aria-label="Inscribirme ahora en el curso">Inscribirme ahora</button>
+  </div>
+</section>
+
+<!-- Beneficios del curso -->
+<section id="benefits" aria-labelledby="benefits-title" role="region">
+  <h2 id="benefits-title">Beneficios del curso</h2>
+
+  <article class="benefit-card" tabindex="0" role="group" aria-label="Automatización de procesos">
+    <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <path d="M49 32a17 17 0 1 0-3.416 10.483l8.627 8.627a3 3 0 1 0 4.242-4.243l-8.627-8.627A16.954 16.954 0 0 0 49 32zM33 49a15 15 0 1 1 4.006-29.914L37 7a1 1 0 1 1 2 0v9a1 1 0 1 1-2 0l-.01-4.104A15.033 15.033 0 0 1 33 49z"/>
+    </svg>
+    <h3>Automatización de procesos</h3>
+  </article>
+
+  <article class="benefit-card" tabindex="0" role="group" aria-label="Toma de decisiones inteligente">
+    <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <path d="M32 4a28 28 0 1 0 28 28A28.032 28.032 0 0 0 32 4zm0 52a24 24 0 1 1 24-24 24.028 24.028 0 0 1-24 24z"/>
+      <path d="M45.7 22.3a1 1 0 0 0-1.4 0l-13 13-5.3-5.3a1 1 0 0 0-1.4 1.4l6 6a1 1 0 0 0 1.4 0l13.7-13.7a1 1 0 0 0 0-1.4z"/>
+    </svg>
+    <h3>Toma de decisiones inteligente</h3>
+  </article>
+
+  <article class="benefit-card" tabindex="0" role="group" aria-label="Análisis predictivo">
+    <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <path d="M8 44h48v4H8zM8 32h48v4H8zM8 20h36v4H8z"/>
+      <circle cx="54" cy="15" r="7"/>
+      <path d="M54 22a7 7 0 0 0 7-7"/>
+    </svg>
+    <h3>Análisis predictivo</h3>
+  </article>
+
+  <article class="benefit-card" tabindex="0" role="group" aria-label="Gestión visual de tareas con IA">
+    <svg class="benefit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <rect x="8" y="16" width="12" height="32" rx="2" ry="2"/>
+      <rect x="26" y="24" width="12" height="24" rx="2" ry="2"/>
+      <rect x="44" y="12" width="12" height="36" rx="2" ry="2"/>
+      <line x1="16" y1="48" x2="16" y2="40" stroke="#0A1F44" stroke-width="3" stroke-linecap="round"/>
+      <line x1="34" y1="48" x2="34" y2="36" stroke="#0A1F44" stroke-width="3" stroke-linecap="round"/>
+      <line x1="52" y1="48" x2="52" y2="48" stroke="#0A1F44" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <h3>Gestión visual de tareas con IA</h3>
+  </article>
+
+</section>
+
+<!-- Testimonios con chats estilo WhatsApp -->
+<section id="testimonials" aria-labelledby="testimonials-title" role="region">
+  <h2 id="testimonials-title">Testimonios de Estudiantes</h2>
+  
+  <div class="testimonial-wrapper">
+    <div class="chat-container" role="group" aria-label="Testimonio Juan Pérez gerente de proyectos">
+      <div class="chat-header">Juan Pérez</div>
+      <div class="message received" tabindex="0">Hola, quería contarte que el curso IA Project Master me ayudó muchísimo.</div>
+      <div class="message sent" tabindex="0">¡Qué bueno escucharlo! ¿Qué fue lo que más te gustó?</div>
+      <div class="message received" tabindex="0">La automatización de procesos y la gestión visual con IA. Muy práctico y fácil de aplicar.</div>
+      <div class="author-info">Juan Pérez</div>
+      <div class="profession-info">Gerente de Proyectos</div>
+    </div>
+
+    <div class="chat-container" role="group" aria-label="Testimonio Ana Gómez consultora">
+      <div class="chat-header">Ana Gómez</div>
+      <div class="message received" tabindex="0">Me encantó cómo las herramientas de IA optimizan la toma de decisiones.</div>
+      <div class="message sent" tabindex="0">¿Recomendarías el curso a otros profesionales?</div>
+      <div class="message received" tabindex="0">Sí, de verdad transforma tu forma de trabajar con proyectos.</div>
+      <div class="author-info">Ana Gómez</div>
+      <div class="profession-info">Consultora</div>
+    </div>
+
+    <div class="chat-container" role="group" aria-label="Testimonio Luis Ramos project manager">
+      <div class="chat-header">Luis Ramos</div>
+      <div class="message received" tabindex="0">Este curso fue la mejor inversión para actualizar mis habilidades.</div>
+      <div class="message sent" tabindex="0">¿Cuál fue el beneficio principal para ti?</div>
+      <div class="message received" tabindex="0">El análisis predictivo aplicado a proyectos, me da mucha confianza al planificar.</div>
+      <div class="author-info">Luis Ramos</div>
+      <div class="profession-info">Project Manager</div>
+    </div>
+  </div>
+</section>
+
+<!-- Calendario y promoción -->
+<section id="calendar" aria-labelledby="calendar-title" role="region">
+  <h2 id="calendar-title">Próximos Cursos y Oferta Especial</h2>
+  <p>Precio del curso: <strong>$200 USD</strong></p>
+  <p class="discount">¡Oferta por tiempo limitado: 20% de descuento!</p>
+  <div id="countdown" aria-live="polite" aria-atomic="true" role="timer" style="margin-top:1rem;"></div>
+</section>
+
+<!-- Formulario de inscripción -->
+<section id="registration" aria-labelledby="registration-title" role="region">
+  <h2 id="registration-title">Formulario de Inscripción</h2>
+  <form id="registration-form" novalidate>
+    <input type="text" name="fullname" id="fullname" placeholder="Nombre completo" required aria-required="true" aria-label="Nombre completo" autocomplete="name" />
+    <input type="email" name="email" id="email" placeholder="Correo electrónico" required aria-required="true" aria-label="Correo electrónico" autocomplete="email" />
+    <select name="modalidad" id="modalidad" required aria-required="true" aria-label="Modalidad del curso">
+      <option value="" disabled selected>Selecciona modalidad</option>
+      <option value="virtual">Virtual</option>
+      <option value="presencial">Presencial</option>
+    </select>
+    <button type="submit" class="btn-primary" aria-label="Inscribirme al curso">Inscribirme al curso</button>
+  </form>
+  <p id="form-message" role="alert" style="margin-top:1rem; color: #d32f2f; font-weight: 600;"></p>
+</section>
+
+<!-- Preguntas Frecuentes -->
+<section id="faqs" aria-labelledby="faqs-title" role="region">
+  <h2 id="faqs-title">Preguntas Frecuentes</h2>
+  <div class="faq-item" tabindex="0">
+    <strong>¿Cuál es la duración del curso?</strong>
+    <p>El curso tiene una duración de 4 semanas intensivas.</p>
+  </div>
+  <div class="faq-item" tabindex="0">
+    <strong>¿Cuáles son los requisitos previos?</strong>
+    <p>Conocimientos básicos sobre gestión de proyectos y un interés en IA.</p>
+  </div>
+  <div class="faq-item" tabindex="0">
+    <strong>¿Cuál es la modalidad del curso?</strong>
+    <p>Disponible en modalidad Virtual y Presencial.</p>
+  </div>
+  <div class="faq-item" tabindex="0">
+    <strong>¿Qué beneficios obtengo?</strong>
+    <p>Capacitación práctica, análisis predictivo, automatización y más.</p>
+  </div>
+  <div class="faq-item" tabindex="0">
+    <strong>¿Cuáles son los métodos de pago?</strong>
+    <p>Tarjeta de crédito, PayPal y transferencias bancarias.</p>
+  </div>
+  <div class="faq-item" tabindex="0" id="contact">
+    <strong>¿Ofrecen soporte durante el curso?</strong>
+    <p>Sí, soporte dedicado durante toda la duración del curso.</p>
+  </div>
+</section>
+
+<!-- Descarga material gratuito -->
+<section id="download" role="region" aria-label="Descarga de material gratuito">
+  <h2>Descarga Material Gratuito</h2>
+  <button id="downloadBtn" class="btn-primary" aria-label="Descargar PDF gratuito">Descargar PDF</button>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>Contacto: <a href="mailto:info@iaprojectmaster.com" aria-label="Enviar correo a info@iaprojectmaster.com">info@iaprojectmaster.com</a> | Tel: <a href="tel:+5551234567" aria-label="Llamar al teléfono 555 123 4567">(555) 123-4567</a></p>
+  <p class="social-links" aria-label="Enlaces a redes sociales">
+    <a href="#" aria-label="Facebook" tabindex="0" title="Facebook">📘 Facebook</a> |
+    <a href="#" aria-label="Twitter" tabindex="0" title="Twitter">🐦 Twitter</a> |
+    <a href="#" aria-label="LinkedIn" tabindex="0" title="LinkedIn">💼 LinkedIn</a>
+  </p>
+  <p><a href="#" aria-label="Leer términos y condiciones">Términos y condiciones / aviso legal</a></p>
+</footer>
+
+<script>
+  // CONTADOR REGRESIVO - 7 DIAS DESDE LA PRIMERA VISITA
+  // Guardamos la fecha objetivo en localStorage para persistencia
+  const countdownEl = document.getElementById('countdown');
+
+  let countdownTarget = localStorage.getItem('countdownTarget');
+  if (!countdownTarget) {
+    const now = Date.now();
+    countdownTarget = now + 7*24*60*60*1000; // 7 días en ms
+    localStorage.setItem('countdownTarget', countdownTarget);
+  } else {
+    countdownTarget = +countdownTarget; // convertir a número
+  }
+
+  function updateCountdown() {
+    const now = Date.now();
+    const distance = countdownTarget - now;
+
+    if (distance <= 0) {
+      countdownEl.textContent = "¡Promoción finalizada!";
+      localStorage.removeItem('countdownTarget');
+      clearInterval(interval);
+      return;
+    }
+
+    const days = Math.floor(distance / (1000*60*60*24));
+    const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  const interval = setInterval(updateCountdown, 1000);
+
+  // FORMULARIO DE INSCRIPCIÓN - Validación básica y mensaje
+  const form = document.getElementById('registration-form');
+  const formMessage = document.getElementById('form-message');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    formMessage.textContent = '';
+
+    const fullname = form.fullname.value.trim();
+    const email = form.email.value.trim();
+    const modalidad = form.modalidad.value;
+
+    if (!fullname) {
+      formMessage.textContent = 'Por favor, ingresa tu nombre completo.';
+      form.fullname.focus();
+      return;
+    }
+    if (!validateEmail(email)) {
+      formMessage.textContent = 'Por favor, ingresa un correo electrónico válido.';
+      form.email.focus();
+      return;
+    }
+    if (!modalidad) {
+      formMessage.textContent = 'Selecciona una modalidad.';
+      form.modalidad.focus();
+      return;
+    }
+
+    formMessage.style.color = '#0A1F44';
+    formMessage.textContent = "¡Gracias por registrarte! Nos pondremos en contacto contigo pronto.";
+
+    // Reiniciar formulario (opcional)
+    form.reset();
+  });
+
+  function validateEmail(email) {
+    // Expresión regular sencilla para validar email
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email.toLowerCase());
+  }
+
+  // DESCARGA MATERIAL GRATUITO - Simulación de descarga PDF
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    // Simula la descarga generando un PDF ficticio con texto
+    const pdfContent = `
+      IA Project Master - Material Gratuito
+
+      Gestión de Proyectos con Apoyo de la Inteligencia Artificial
+
+      Contenido:
+      - Introducción a la IA en gestión.
+      - Herramientas clave.
+      - Casos prácticos.
+      - Consejos para aplicar IA de forma efectiva.
+
+      ¡Capacítate con IA hoy!
+    `;
+
+    const blob = new Blob([pdfContent], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Material_Gratuito_IA_Project_Master.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+</script>
+
+</body>
+</html>
+
